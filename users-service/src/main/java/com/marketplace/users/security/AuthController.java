@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
@@ -58,29 +59,39 @@ public class AuthController {
         }
     }
     
-	@PostMapping("/register")
-	public ResponseEntity<?> registerUser(@RequestBody RegisterRequest request) {
-	    if (usuarioRepository.findByCorreo(request.getCorreo()).isPresent()) {
-	        return ResponseEntity.badRequest().body("El correo ya está registrado.");
-	    }
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest request) {
+        // Validar si el tipo de usuario es ADMIN
+        if ("ADMIN".equalsIgnoreCase(request.getTipo())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("No está permitido registrarse como ADMIN.");
+        }
 
-	    Usuario nuevo = new Usuario();
-	    nuevo.setNombre(request.getNombre());
-	    nuevo.setCorreo(request.getCorreo());
-	    nuevo.setTelefono(request.getTelefono());
-	    nuevo.setTipo(TipoUsuario.valueOf(request.getTipo().toUpperCase())); // Validar
-	    nuevo.setContrasena(passwordEncoder.encode(request.getContrasena()));
-	    nuevo.setVerificado(false);
+        // Validar si el correo ya está registrado
+        if (usuarioRepository.findByCorreo(request.getCorreo()).isPresent()) {
+            return ResponseEntity.badRequest().body("El correo ya está registrado.");
+        }
 
-	    usuarioRepository.save(nuevo);
-	    
-	    String username = nuevo.getCorreo();
-	    List<String> roles = List.of("ROLE_" + nuevo.getTipo().name());
-	    // Crear token
-	    String token = jwtUtil.generateToken(username, roles);
+        try {
+            Usuario nuevo = new Usuario();
+            nuevo.setNombre(request.getNombre());
+            nuevo.setCorreo(request.getCorreo());
+            nuevo.setTelefono(request.getTelefono());
+            nuevo.setTipo(TipoUsuario.valueOf(request.getTipo().toUpperCase())); // Validar enum
+            nuevo.setContrasena(passwordEncoder.encode(request.getContrasena()));
+            nuevo.setVerificado(false);
 
-	    return ResponseEntity.ok(Collections.singletonMap("token", token));
+            usuarioRepository.save(nuevo);
 
-	}
+            String username = nuevo.getCorreo();
+            List<String> roles = List.of("ROLE_" + nuevo.getTipo().name());
+            String token = jwtUtil.generateToken(username, roles);
+
+            return ResponseEntity.ok(Collections.singletonMap("token", token));
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Tipo de usuario inválido.");
+        }
+    }
 
 }

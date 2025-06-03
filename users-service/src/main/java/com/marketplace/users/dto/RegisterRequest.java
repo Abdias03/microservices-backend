@@ -1,11 +1,23 @@
 package com.marketplace.users.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 public class RegisterRequest {
 	
-	private String nombre;
+    @NotBlank(message = "El nombre es obligatorio")
+    private String nombre;
+
+    @Email(message = "Correo no válido")
+    @NotBlank(message = "El correo es obligatorio")
     private String correo;
+
     private String telefono;
+
+    @NotBlank(message = "La contraseña es obligatoria")
     private String contrasena;
+
+    @NotBlank(message = "El tipo de usuario es obligatorio")
     private String tipo;
     
 	public String getNombre() {

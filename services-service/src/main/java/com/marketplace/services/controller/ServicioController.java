@@ -2,7 +2,12 @@ package com.marketplace.services.controller;
 
 import com.marketplace.services.entity.Servicio;
 import com.marketplace.services.repository.ServicioRepository;
+import com.marketplace.users.controller.UsuarioController;
+
 import jakarta.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +18,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/servicios")
 public class ServicioController {
-
+	
+	private static final Logger logger = LoggerFactory.getLogger(ServicioController.class);
+	
     @Autowired
     private ServicioRepository servicioRepository;
 
@@ -32,6 +39,7 @@ public class ServicioController {
 
     @PostMapping
     public ResponseEntity<?> crearServicio(@Valid @RequestBody Servicio servicio) {
+    	logger.info("nuevo servicio: {}", servicio.toString());
         Servicio nuevo = servicioRepository.save(servicio);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
     }
