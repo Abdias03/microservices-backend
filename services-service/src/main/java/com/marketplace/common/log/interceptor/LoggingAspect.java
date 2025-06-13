@@ -13,10 +13,12 @@ public class LoggingAspect {
     
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
     
-    @Pointcut("execution(* com.serviciosapp..controller.*.*(..))")
+    // Intercept all controller layer methods across microservices
+    @Pointcut("execution(* com.marketplace..controller.*.*(..))")
     public void controllerMethods() {}
-    
-    @Pointcut("execution(* com.serviciosapp..service.*.*(..))")
+
+    // Intercept all service layer methods across microservices
+    @Pointcut("execution(* com.marketplace..service.*.*(..))")
     public void serviceMethods() {}
     
     @Around("controllerMethods() || serviceMethods()")
