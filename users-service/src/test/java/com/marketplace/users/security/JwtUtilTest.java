@@ -2,21 +2,19 @@ package com.marketplace.users.security;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class JwtUtilTest {
 
     @Test
-    void generatedTokenIsValid() {
+    void generateAndValidateToken() {
         JwtUtil jwtUtil = new JwtUtil();
-        String token = jwtUtil.generateToken("testuser", List.of("ROLE_USER"));
-        assertTrue(jwtUtil.validateToken(token));
+        String token = jwtUtil.generateToken("testuser");
+        assertTrue(jwtUtil.validateToken(token), "Token should be valid");
     }
 
     @Test
-    void getUsernameFromTokenReturnsExpectedUser() {
+    void extractUsernameFromToken() {
         JwtUtil jwtUtil = new JwtUtil();
         String username = "anotherUser";
         String token = jwtUtil.generateToken(username);
