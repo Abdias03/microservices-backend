@@ -1,6 +1,6 @@
 package com.marketplace.users.entity;
 
-public enum  TipoUsuario {
+public enum TipoUsuario {
 
     CLIENTE,
     PROVEEDOR,
