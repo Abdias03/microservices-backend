@@ -75,7 +75,7 @@
 	</root>
 
 	<!-- Specific loggers -->
-	<logger name="com.serviciosapp" level="DEBUG" />
+        <logger name="com.marketplace" level="DEBUG" />
 	<logger name="org.springframework.web" level="DEBUG" />
 	<logger name="org.springframework.security" level="DEBUG" />
 	<logger name="org.hibernate.SQL" level="DEBUG" />
