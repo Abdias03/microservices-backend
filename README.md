@@ -31,7 +31,7 @@ Gestión de usuarios (registro, verificación, login, tipo de usuario).
   - `POST /usuarios`: Crear usuario
   - `GET /usuarios/{id}`: Obtener información de usuario
   - `PUT /usuarios/{id}`: Editar usuario
-  - `POST /usuarios/login`: Iniciar sesión
+  - `POST /auth/login`: Iniciar sesión
 
 - **Tecnologías:**
   - Spring Boot
