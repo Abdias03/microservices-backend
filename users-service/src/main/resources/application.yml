@@ -1,6 +1,6 @@
 logging:
   level:
-    com.serviciosapp: DEBUG
+    com.marketplace: DEBUG
     org.springframework.web: INFO
     org.springframework.security: DEBUG
     org.hibernate.SQL: DEBUG
